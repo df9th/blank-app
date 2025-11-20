@@ -125,13 +125,30 @@ if file is not None:
     with tab3:
         st.subheader("Histograma da Distribuição das Medições")
 
+    
+   
+        min_val = np.floor(valores.min())
+        max_val = np.ceil(valores.max())
+
+     
+        bins = np.arange(min_val, max_val + 1, 1)
+
         hist = px.histogram(
             x=valores,
-            nbins=15,
-            title="Histograma dos Pesos das Cumbucas",
+            nbins=len(bins),
             labels={"x": "Peso (g)", "y": "Frequência"},
+            title="Histograma com Faixas de 1 g",
             opacity=0.75,
         )
+
+        
+        hist.update_traces(xbins=dict(
+            start=min_val,
+            end=max_val,
+            size=1  
+        ))
+
+      
         hist.add_vline(
             x=media,
             line_color="red",
@@ -140,15 +157,9 @@ if file is not None:
             annotation_position="top right",
             annotation=dict(font=dict(color="black"), yshift=20),
         )
+
         st.plotly_chart(hist, use_container_width=True)
 
-        st.subheader("Boxplot dos Pesos")
-        box = px.box(
-            y=valores,
-            labels={"y": "Peso (g)"},
-            title="Boxplot dos Pesos",
-        )
-        st.plotly_chart(box, use_container_width=True)
 
    
     with tab4:
@@ -348,43 +359,62 @@ LCL_R = {D3:.3f} × {R_bar:.3f}
         st.write("___")
         st.subheader("Histograma com LSL e USL")
 
+# Define o range dos bins baseado nos valores reais
+        min_val = np.floor(valores.min())
+        max_val = np.ceil(valores.max())
+
         fig_cap = px.histogram(
             x=valores,
-            nbins=20,
-            title="Histograma com LSL e USL",
             labels={"x": "Peso (g)", "y": "Frequência"},
+            title="Histograma com LSL e USL (faixas de 1 g)",
             opacity=0.75,
         )
+
+        # bins de 1 g
+        fig_cap.update_traces(
+            xbins=dict(
+                start=min_val,
+                end=max_val,
+                size=1  # largura = 1 g
+            )
+        )
+
+        # LSL
         fig_cap.add_vline(
             x=LSL,
-            line_color="orange",
+            line_color="red",
             line_dash="dash",
             annotation_text=f"LSL = {LSL:.2f}",
             annotation_position="top left",
             annotation=dict(font=dict(color="black"), yshift=20),
         )
+
+        # USL
         fig_cap.add_vline(
             x=USL,
-            line_color="orange",
+            line_color="red",
             line_dash="dash",
             annotation_text=f"USL = {USL:.2f}",
             annotation_position="top right",
             annotation=dict(font=dict(color="black"), yshift=20),
         )
+
+        # Média
         fig_cap.add_vline(
             x=Xbar_bar,
-            line_color="green",
-            line_dash="dot",
+            line_color="black",
+            line_dash="dash",
             annotation_text=f"Média = {Xbar_bar:.2f}",
             annotation_position="bottom right",
             annotation=dict(
                 font=dict(color="black", size=12),
-                yshift=-40,   
-                xshift=30     
+                yshift=-40,
+                xshift=30
             ),
         )
 
         st.plotly_chart(fig_cap, use_container_width=True)
+
 
 
         # ======== CÁLCULOS DETALHADOS – CAPACIDADE =========
