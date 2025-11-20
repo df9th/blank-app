@@ -257,6 +257,52 @@ if file is not None:
         st.plotly_chart(fig_r, use_container_width=True)
 
 
+        # ======= CÁLCULOS DETALHADOS – Xbar e R =======
+        st.markdown(f"""
+<div class="calc-box">
+<div class="calc-title">Cálculo dos Limites – Gráfico X̄</div>
+
+**CL = X̄̄ = {Xbar_bar:.3f}**
+
+---
+
+**UCL = X̄̄ + A₂ × R̄**  
+UCL = {Xbar_bar:.3f} + {A2:.3f} × {R_bar:.3f}  
+**UCL = {UCL_X:.3f}**
+
+---
+
+**LCL = X̄̄ − A₂ × R̄**  
+LCL = {Xbar_bar:.3f} − {A2:.3f} × {R_bar:.3f}  
+**LCL = {LCL_X:.3f}**
+
+</div>
+""", unsafe_allow_html=True)
+
+
+        st.markdown(f"""
+<div class="calc-box">
+<div class="calc-title">Cálculo dos Limites – Gráfico R</div>
+
+**CL = R̄ = {R_bar:.3f}**
+
+---
+
+**UCL_R = D₄ × R̄**  
+UCL_R = {D4:.3f} × {R_bar:.3f}  
+**UCL_R = {UCL_R:.3f}**
+
+---
+
+**LCL_R = D₃ × R̄**  
+LCL_R = {D3:.3f} × {R_bar:.3f}  
+**LCL_R = {LCL_R:.3f}**
+
+</div>
+""", unsafe_allow_html=True)
+
+
+
     with tab5:
         st.subheader("Capacidade do Processo e Performance")
 
@@ -339,3 +385,72 @@ if file is not None:
         )
 
         st.plotly_chart(fig_cap, use_container_width=True)
+
+
+        # ======== CÁLCULOS DETALHADOS – CAPACIDADE =========
+
+        st.markdown(f"""
+<div class="calc-box">
+<div class="calc-title">Estimativa do Desvio Padrão (σ)</div>
+
+σ = R̄ / d₂  
+σ = {R_bar:.3f} / {d2:.3f}  
+**σ = {sigma_est:.3f}**
+
+</div>
+""", unsafe_allow_html=True)
+
+        st.markdown(f"""
+<div class="calc-box">
+<div class="calc-title">Índices Cp, Cpu, Cpl e Cpk</div>
+
+**Cp = (USL - LSL) / (6σ)**  
+Cp = ({USL:.2f} - {LSL:.2f}) / (6 × {sigma_est:.3f})  
+**Cp = {Cp:.3f}**
+
+---
+
+**Cpu = (USL - X̄̄) / (3σ)**  
+Cpu = ({USL:.2f} - {Xbar_bar:.3f}) / (3 × {sigma_est:.3f})  
+**Cpu = {Cpu:.3f}**
+
+---
+
+**Cpl = (X̄̄ - LSL) / (3σ)**  
+Cpl = ({Xbar_bar:.3f} - {LSL:.2f}) / (3 × {sigma_est:.3f})  
+**Cpl = {Cpl:.3f}**
+
+---
+
+Cpk = min(Cpu, Cpl)  
+Cpk = min({Cpu:.3f}, {Cpl:.3f})  
+**Cpk = {Cpk:.3f}**
+
+</div>
+""", unsafe_allow_html=True)
+
+        st.markdown(f"""
+<div class="calc-box">
+<div class="calc-title">Probabilidade de Peças Fora da Especificação</div>
+
+**Acima do USL:**  
+p_acima = 1 − Φ(Zₛ)  
+p_acima = 1 − Φ({Z_sup:.3f})  
+**p_acima = {p_acima*100:.4f}%**
+
+---
+
+**Abaixo do LSL:**  
+p_abaixo = 1 − Φ(Zᵢ)  
+p_abaixo = 1 − Φ({Z_inf:.3f})  
+**p_abaixo = {p_abaixo*100:.4f}%**
+
+---
+
+**Total Fora:**  
+p_total = p_acima + p_abaixo  
+p_total = {p_acima*100:.4f}% + {p_abaixo*100:.4f}%  
+**p_total = {p_total*100:.4f}%**
+
+</div>
+""", unsafe_allow_html=True)
