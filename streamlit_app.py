@@ -161,6 +161,14 @@ if file is not None:
         st.plotly_chart(hist, use_container_width=True)
 
 
+        st.subheader("Boxplot dos Pesos")
+            box = px.box(
+                y=valores,
+                labels={"y": "Peso (g)"},
+                title="Boxplot dos Pesos",
+            )
+            st.plotly_chart(box, use_container_width=True)
+
    
     with tab4:
         
