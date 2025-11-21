@@ -167,7 +167,7 @@ if file is not None:
                 labels={"y": "Peso (g)"},
                 title="Boxplot dos Pesos",
             )
-            st.plotly_chart(box, use_container_width=True)
+        st.plotly_chart(box, use_container_width=True)
 
    
     with tab4:
